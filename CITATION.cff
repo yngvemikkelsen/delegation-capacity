@@ -9,6 +9,7 @@ authors:
     affiliation: "Independent Researcher, Jar, Norway"
 repository-code: "https://github.com/yngvemikkelsen/delegation-capacity"
 version: "1.0.0"
+license: MIT
 date-released: "2026-10-18"
 keywords:
   - clinical artificial intelligence

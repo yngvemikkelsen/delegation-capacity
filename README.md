@@ -44,6 +44,10 @@ The analyses use MIMIC-IV 3.1 and MIMIC-IV-Note 2.2, available to credentialed u
 
 `extension_p8_vaso_diagnostic_v2.py` produced the reported post hoc results. A later v3 differs only in printing a clearer message when the review sheet has no labels, and is not included.
 
+## Licence
+
+Code: MIT License (see `LICENSE`). Aggregate results, analysis plans and review labels (`results/`, `analysis_plans/`): CC BY 4.0. No patient-level data are included; data access is governed by the PhysioNet data use agreements.
+
 ## Citation
 
 See `CITATION.cff`. The archived release is on Zenodo; the DOI is given in the paper's Data availability statement.
