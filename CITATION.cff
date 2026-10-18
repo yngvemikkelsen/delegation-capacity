@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the article and this repository."
+title: "delegation-capacity: code for 'From delegation to usable capacity: extending the supply–demand production condition to human-to-machine delegation'"
+type: software
+authors:
+  - family-names: Mikkelsen
+    given-names: Yngve
+    orcid: "https://orcid.org/0000-0003-1543-3805"
+    affiliation: "Independent Researcher, Jar, Norway"
+repository-code: "https://github.com/yngvemikkelsen/delegation-capacity"
+version: "1.0.0"
+date-released: "2026-10-18"
+keywords:
+  - clinical artificial intelligence
+  - delegation
+  - human oversight
+  - MIMIC-IV
+  - large language models

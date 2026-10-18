@@ -1,0 +1,25 @@
+P4 LABEL PROVENANCE -- PRESPECIFIED ANALYSIS PLAN
+(written before the experiment; do not edit after the full run starts)
+
+Delegate outputs : LLM answers from the P8 run (notes with a valid answer for
+                   all three facts and not flagged as possibly truncated).
+Reference        : ICU event tables (structured_present).
+Review           : erroneous answer overridden with probability q (s=1, r=0).
+Scenarios        : constant q = 0.5; load q by quartile = 0.8,0.6,0.4,0.2.
+Omega grid       : 0,0.25,0.5,0.75,1
+Classifier       : BAAI/bge-base-en-v1.5 embeddings (CLS, L2, 512-token chunks, mean+max),
+                   PCA k = 64 on the training split, standardised, ridge
+                   logistic alpha = 0.01 (intercept unpenalised).
+Split            : by subject_id, test fraction 0.3.
+Repetitions      : 50, seed 42.
+
+PRIMARY  per fact, constant scenario: Brier(omega=1) - Brier(omega=0) on
+         the independent test reference, paired within repetition; mean,
+         2.5 and 97.5 percentiles.
+         supported     2.5th percentile > 0
+         contradicted  mean <= 0
+         inconclusive  mean > 0 and 2.5th percentile <= 0
+SECONDARY dAUROC; d calibration-in-the-large; dose-response over omega;
+         load vs constant scenario, difference in differences of
+         dBrier(omega=1) between quartile 4 and quartile 1; realised label
+         contamination by quartile.

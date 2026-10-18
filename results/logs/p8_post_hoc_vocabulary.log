@@ -1,0 +1,75 @@
+uv run --offline extension_p8_vaso_diagnostic_v2.py
+Installed 13 packages in 84ms
+P8 per-note table <- /Users/yngve/extension_results/p8/p8_per_note_fact.csv
+vasopressor primary-set notes: 1699  misses: 565
+discharge <- /Users/yngve/physionet.org/files/mimic-iv-note/2.2/note/discharge.csv.gz
+agreement with P8 text_mentioned (vasopressor, all notes): 100.0000%
+POST HOC DIAGNOSTIC v2 -- not part of the prespecified P8 analysis
+
+Vasopressor primary-set notes 1699, misses 565
+Agreement of re-scan with P8 text_mentioned: 100.0000%
+
+1. Mentions by term group and context class (counts)
+
+cls       allergy  ambiguous_admin_context  ambiguous_no_context  local_anaesthetic  neuro_agonist  ophthalmic_topical  specific_term   All
+group                                                                                                                                      
+brand           1                        0                     0                  0              1                   4           1445  1451
+generic        21                      520                   309                  9              1                   7            798  1665
+umbrella        6                        0                     0                  0              1                   7           2437  2451
+All            28                      520                   309                  9              3                  18           4680  5567
+
+2. Notes by term category and quartile
+
+     category quartile  notes  misses  miss_rate  lo95  hi95
+      generic        1    180      11      0.061 0.034 0.106
+      generic        2    188      15      0.080 0.049 0.127
+      generic        3    176      15      0.085 0.052 0.136
+      generic        4    171      14      0.082 0.049 0.133
+      generic      all    715      55      0.077 0.060 0.099
+   brand_only        1    134      37      0.276 0.207 0.357
+   brand_only        2    132      36      0.273 0.204 0.354
+   brand_only        3    115      33      0.287 0.212 0.375
+   brand_only        4     96      30      0.312 0.229 0.411
+   brand_only      all    477     136      0.285 0.246 0.327
+umbrella_only        1     94      69      0.734 0.637 0.813
+umbrella_only        2    107      75      0.701 0.608 0.779
+umbrella_only        3    137      94      0.686 0.604 0.758
+umbrella_only        4    135     108      0.800 0.725 0.859
+umbrella_only      all    473     346      0.732 0.690 0.769
+   loose_only        1      7       5      0.714 0.359 0.918
+   loose_only        2      8       7      0.875 0.529 0.978
+   loose_only        3     11       9      0.818 0.523 0.949
+   loose_only        4      8       7      0.875 0.529 0.978
+   loose_only      all     34      28      0.824 0.665 0.917
+          ALL        1    415     122      0.294 0.252 0.340
+          ALL        2    435     133      0.306 0.264 0.351
+          ALL        3    439     151      0.344 0.301 0.390
+          ALL        4    410     159      0.388 0.342 0.436
+          ALL      all   1699     565      0.333 0.311 0.355
+
+3. Share of notes in each category, by quartile
+
+q_num             1     2     3     4
+category                             
+generic       0.434 0.432 0.401 0.417
+brand_only    0.323 0.303 0.262 0.234
+umbrella_only 0.227 0.246 0.312 0.329
+loose_only    0.017 0.018 0.025 0.020
+
+4. Models (logistic, OR per quartile step, cluster-robust by subject)
+
+M1 miss ~ q_num (reproduces P8 S5)                   OR 1.156 (1.053-1.268) p=0.00219 n=1699 events=565
+M2 miss ~ q_num + category                           OR 1.093 (0.976-1.224) p=0.1242 n=1699 events=565
+M3 miss ~ q_num, generic notes only                  OR 1.101 (0.865-1.401) p=0.435 n=715 events=55
+
+Reading: if M2 and M3 keep the M1 gradient, question vocabulary does
+not explain it; if the gradient vanishes in M2/M3 and brand_only or
+umbrella_only notes have high miss rates and grow with quartile, it does.
+
+Review sheet: 240 items (requested 50 misses + 10 hits per quartile), shuffled; no quartile, LLM answer, class or category shown -> /Users/yngve/extension_results/p8_adjudication/review_sheet.csv
+Items sampled per cell (fewer than requested where the cell is smaller):
+quartile   1   2   3   4
+answer                  
+hit       10  10  10  10
+miss      50  50  50  50
+Label each row A / O / N / U (see the script header). Do not open the key/ subfolder before labelling.

@@ -1,0 +1,51 @@
+uv run --offline extension_check_acuity_cohort.py
+Installed 4 packages in 39ms
+acuity file   /Users/yngve/projects/BCST/paper18_results/paper18_phase1_acuity.csv
+              modified 2026-05-22 09:48, 5878 rows
+columns       ['stay_id', 'n_acuity_hours', 'acuity_hr_locf', 'acuity_map_locf', 'acuity_rr_locf', 'acuity_spo2_locf', 'acuity_gcs_locf', 'score_hr', 'score_map', 'score_rr', 'score_spo2', 'score_gcs', 'anchor_age', 'vent_first_24h', 'score_age', 'score_vent', 'acuity_proxy_24h', 'acuity_quartile']
+
+1. stays 5878  admissions 5878  patients 5317  (not in icustays: 0)
+
+2. first_careunit
+       5878  Medical Intensive Care Unit (MICU)
+   share matching \(MICU\)$: 1.0000
+
+3. length of stay, hours: min 72.0  p1 72.5  p5 75.0  median 138.5  max 5433.7
+   share >= 72 h: 1.0000   share >= 48 h: 1.0000
+
+4. rank among MICU stays of the same admission (1 = first):
+   rank_in_hadm
+   1.0    5857
+   2.0      21
+   admissions with more than one ICU stay (any unit): 751 of 5878 stays
+
+5. anchor_age: min 18  median 63.0  max 91
+
+6. score
+   acuity_proxy_24h: min 1.0  max 18.0  mean 9.80  missing 0
+   score_hr     values [0.0, 1.0, 2.0, 3.0]
+   score_map    values [0.0, 1.0, 2.0, 3.0]
+   score_rr     values [0.0, 1.0, 2.0, 3.0]
+   score_spo2   values [0.0, 1.0, 2.0, 3.0]
+   score_gcs    values [1.0, 2.0, 3.0]
+   score_age    values [0.0, 1.0, 2.0]
+   score_vent   values [0.0, 1.0]
+   quartile: n, score min, score max
+                    size   min   max
+   acuity_quartile                  
+   1                1967   1.0   8.0
+   2                1566   9.0  10.0
+   3                1296  11.0  12.0
+   4                1049  13.0  18.0
+
+7. n_acuity_hours: min 24  median 24.0  max 24
+
+8. candidate build scripts under /Users/yngve/projects
+   2026-05-22 09:47  before   33279 B  sha 68407f45c166  /Users/yngve/projects/paper18/paper18_phase1_granger.py
+        markers: MICU, 72, MIN_EFFECTIVE, ANALYSIS_WINDOW, warmup, qcut, vent_first_24h, anchor_age, acuity_proxy_24h, acuity_quartile, paper18_phase1_acuity.csv
+   2026-08-19 08:50  AFTER    14497 B  sha c8e97d1ac0ab  /Users/yngve/projects/paper18/paper18x_acuity_build.py
+        markers: qcut, acuity_quartile, paper18_phase1_acuity.csv
+   2026-08-22 11:19  AFTER    16706 B  sha c83e901977bd  /Users/yngve/projects/Paper_18_v2/paper18x_acuity_build.py
+        markers: qcut, acuity_quartile, paper18_phase1_acuity.csv
+
+   latest script modified before the acuity file: /Users/yngve/projects/paper18/paper18_phase1_granger.py

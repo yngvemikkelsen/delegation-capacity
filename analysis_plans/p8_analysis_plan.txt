@@ -1,0 +1,40 @@
+P8 ERROR-DEMAND COUPLING -- PRESPECIFIED ANALYSIS PLAN
+(written before the first LLM call; do not edit after the full run starts)
+
+Unit            note x fact (three facts: vasopressor, renal_replacement,
+                rbc_transfusion), one discharge summary per single-ICU-stay
+                admission.
+Delegate output LLM answer yes/no. Answers that fail to parse, and notes
+                flagged as possibly truncated, are excluded from the primary
+                analysis and counted by stratum.
+Reference       fact present in the ICU event tables (structured_present).
+Documented      fact mentioned in the summary (regex with a 40-character
+                negation window; text_mentioned).
+Strata          acuity_quartile coded 0-3 (q_num).
+
+PRIMARY
+  Set      structured_present AND text_mentioned (documented positives).
+  Outcome  miss = LLM answered "no".
+  Model    logistic GLM: miss ~ q_num + C(fact), cluster-robust SE by
+           subject_id. Estimate: odds ratio per quartile step, 95% CI.
+  Decision supported      OR > 1 and lower 95% bound > 1
+           contradicted   OR <= 1 (flat or falling)
+           inconclusive   OR > 1 and lower 95% bound <= 1
+
+SECONDARY
+  S1  all structured positives; outcome miss (includes documentation
+      omission: the error as the clinician meets it). Same model.
+  S2  structured-negative AND not mentioned; outcome LLM "yes"
+      (unsupported positive). Same model.
+  S3  primary set; model adds log(note words) -- whether the gradient runs
+      through note length (a mediator, not a confounder).
+  S4  primary set, vasopressor and rbc_transfusion only; lab-only SOFA
+      (0-12, per point) in place of q_num.
+  S5  primary set, one model per fact (q_num only).
+  S6  primary set with excluded notes (parse failure, truncation) counted
+      as misses.
+  Absolute rates by stratum with Wilson 95% CIs for primary, S1 and S2.
+
+Reference-window note: the reference covers the ICU stay; the question
+covers the admission. The primary set (ICU-confirmed positives) is robust to
+this; S2 is not (ward-only events are scored as unsupported positives).

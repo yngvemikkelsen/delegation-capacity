@@ -1,0 +1,126 @@
+(base) yngve@MacBook-Pro-M2 Downloads % cd ~/Downloads                           
+HF_HUB_OFFLINE=1 caffeinate -i uv run --offline extension_p4_label_provenance.py 2>&1 | tee ~/extension_results/p4_run.log
+Installed 51 packages in 769ms
+loading P8 delegate outputs
+    P8 per-note table <- /Users/yngve/extension_results/p8/p8_per_note_fact.csv
+    notes: 4078; usable (all three answers valid, not truncated): 4078
+    vasopressor        prevalence 0.550  LLM error vs reference 0.278  by quartile 0.196 0.267 0.311 0.394
+    renal_replacement  prevalence 0.151  LLM error vs reference 0.038  by quartile 0.047 0.028 0.038 0.039
+    rbc_transfusion    prevalence 0.356  LLM error vs reference 0.165  by quartile 0.137 0.148 0.200 0.196
+    discharge       <- /Users/yngve/physionet.org/files/mimic-iv-note/2.2/note/discharge.csv.gz
+    encoding 4078 notes with BAAI/bge-base-en-v1.5 on mps
+Loading weights: 100%|██████████| 199/199 [00:00<00:00, 12333.27it/s]
+BertModel LOAD REPORT from: BAAI/bge-base-en-v1.5
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Token indices sequence length is longer than the specified maximum sequence length for this model (2712 > 512). Running this sequence through the model will result in indexing errors
+    37449 chunks (9.2 per note)
+      16/37449 chunks (2 s)
+      816/37449 chunks (7 s)
+      1616/37449 chunks (12 s)
+      2416/37449 chunks (20 s)
+      3216/37449 chunks (34 s)
+      4016/37449 chunks (56 s)
+      4816/37449 chunks (68 s)
+      5616/37449 chunks (79 s)
+      6416/37449 chunks (91 s)
+      7216/37449 chunks (102 s)
+      8016/37449 chunks (114 s)
+      8816/37449 chunks (125 s)
+      9616/37449 chunks (136 s)
+      10416/37449 chunks (148 s)
+      11216/37449 chunks (159 s)
+      12016/37449 chunks (171 s)
+      12816/37449 chunks (182 s)
+      13616/37449 chunks (193 s)
+      14416/37449 chunks (205 s)
+      15216/37449 chunks (216 s)
+      16016/37449 chunks (227 s)
+      16816/37449 chunks (239 s)
+      17616/37449 chunks (250 s)
+      18416/37449 chunks (262 s)
+      19216/37449 chunks (273 s)
+      20016/37449 chunks (285 s)
+      20816/37449 chunks (296 s)
+      21616/37449 chunks (308 s)
+      22416/37449 chunks (319 s)
+      23216/37449 chunks (331 s)
+      24016/37449 chunks (344 s)
+      24816/37449 chunks (356 s)
+      25616/37449 chunks (369 s)
+      26416/37449 chunks (382 s)
+      27216/37449 chunks (395 s)
+      28016/37449 chunks (409 s)
+      28816/37449 chunks (423 s)
+      29616/37449 chunks (436 s)
+      30416/37449 chunks (450 s)
+      31216/37449 chunks (463 s)
+      32016/37449 chunks (477 s)
+      32816/37449 chunks (491 s)
+      33616/37449 chunks (506 s)
+      34416/37449 chunks (521 s)
+      35216/37449 chunks (535 s)
+      36016/37449 chunks (549 s)
+      36816/37449 chunks (563 s)
+
+running experiment
+    rep 1/50  1.1 s/rep  ETA 0.9 min
+    rep 5/50  1.0 s/rep  ETA 0.8 min
+    rep 10/50  1.0 s/rep  ETA 0.7 min
+    rep 20/50  1.0 s/rep  ETA 0.5 min
+    rep 30/50  1.0 s/rep  ETA 0.3 min
+    rep 40/50  1.0 s/rep  ETA 0.2 min
+    rep 50/50  1.0 s/rep  ETA 0.0 min
+
+PRIMARY (constant scenario, omega = 1 vs 0, test Brier score on the independent reference; positive = worse)
+
+  vasopressor        dBrier +0.01999 [+0.01335, +0.02692]  dAUROC -0.0038 [-0.0126, +0.0065]  dCITL -0.1333  label contamination 0.140  -> SUPPORTED
+  renal_replacement  dBrier -0.00132 [-0.00294, +0.00073]  dAUROC +0.0005 [-0.0052, +0.0053]  dCITL +0.0092  label contamination 0.019  -> CONTRADICTED
+  rbc_transfusion    dBrier +0.00087 [-0.00252, +0.00357]  dAUROC -0.0038 [-0.0108, +0.0043]  dCITL -0.0207  label contamination 0.083  -> INCONCLUSIVE
+
+DOSE-RESPONSE (mean dBRIER by omega)
+
+omega                          0.00     0.25     0.50     0.75     1.00
+fact              scenario                                             
+rbc_transfusion   constant +0.00000 -0.00008 +0.00000 +0.00024 +0.00087
+                  load     +0.00000 -0.00007 +0.00009 +0.00039 +0.00112
+renal_replacement constant +0.00000 -0.00040 -0.00081 -0.00107 -0.00132
+                  load     +0.00000 -0.00033 -0.00070 -0.00089 -0.00112
+vasopressor       constant +0.00000 +0.00111 +0.00489 +0.01146 +0.01999
+                  load     +0.00000 +0.00122 +0.00544 +0.01250 +0.02149
+
+DOSE-RESPONSE (mean dAUROC by omega)
+
+omega                          0.00     0.25     0.50     0.75     1.00
+fact              scenario                                             
+rbc_transfusion   constant +0.00000 -0.00038 -0.00109 -0.00198 -0.00376
+                  load     +0.00000 -0.00037 -0.00131 -0.00223 -0.00402
+renal_replacement constant +0.00000 +0.00006 +0.00055 +0.00055 +0.00052
+                  load     +0.00000 +0.00008 +0.00052 +0.00046 +0.00035
+vasopressor       constant +0.00000 -0.00018 -0.00084 -0.00232 -0.00381
+                  load     +0.00000 -0.00029 -0.00108 -0.00256 -0.00384
+
+LOAD vs CONSTANT: quartile 4 minus quartile 1 Brier loss at omega = 1
+(positive = larger Brier loss in quartile 4 under load)
+
+  vasopressor        DiD +0.00441 [-0.00196, +0.01084]  reps 50
+  renal_replacement  DiD -0.00006 [-0.00251, +0.00151]  reps 50
+  rbc_transfusion    DiD +0.00087 [-0.00374, +0.00587]  reps 50
+
+REALISED TRAINING-LABEL CONTAMINATION at omega = 1 (mean over reps)
+
+quartile                        1      2      3      4
+fact              scenario                            
+rbc_transfusion   constant 0.0688 0.0724 0.1015 0.0992
+                  load     0.0275 0.0585 0.1194 0.1575
+renal_replacement constant 0.0232 0.0131 0.0185 0.0204
+                  load     0.0092 0.0104 0.0225 0.0320
+vasopressor       constant 0.1009 0.1335 0.1546 0.1953
+                  load     0.0411 0.1078 0.1860 0.3136
+
+written to /Users/yngve/extension_results/p4
+(base) yngve@MacBook-Pro-M2 Downloads % 

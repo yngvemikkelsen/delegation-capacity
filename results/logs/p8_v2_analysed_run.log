@@ -1,0 +1,151 @@
+(base) yngve@MacBook-Pro-M2 Downloads % cd ~/Downloads
+mv ~/extension_results/p8 ~/extension_results/p8_pilot_v1
+caffeinate -i uv run --offline extension_p8_error_demand_v2.py 2>&1 | tee ~/extension_results/p8_v2_run.log
+Installed 20 packages in 79ms
+
+building cohort
+    acuity          <- /Users/yngve/projects/BCST/paper18_results/paper18_phase1_acuity.csv
+    acuity columns: ['stay_id', 'n_acuity_hours', 'acuity_hr_locf', 'acuity_map_locf', 'acuity_rr_locf', 'acuity_spo2_locf', 'acuity_gcs_locf', 'score_hr', 'score_map', 'score_rr', 'score_spo2', 'score_gcs', 'anchor_age', 'vent_first_24h', 'score_age', 'score_vent', 'acuity_proxy_24h', 'acuity_quartile']
+
+--- circularity check against acuity columns ---
+    ok vasopressor: no overlapping acuity column
+    ok renal_replacement: no overlapping acuity column
+    ok rbc_transfusion: no overlapping acuity column
+--- end circularity check ---
+    icustays         <- /Users/yngve/physionet.org/files/mimiciv/3.1/icu/icustays.csv.gz
+    icustays: 94458 stays -> 77547 in single-stay admissions
+    joined to acuity: 5127 admissions, 4686 patients; quartile coding {'1': 0, '2': 1, '3': 2, '4': 3}
+
+--- itemid resolution (VERIFY THESE) ---
+    d_items          <- /Users/yngve/physionet.org/files/mimiciv/3.1/icu/d_items.csv.gz
+  vasopressor via inputevents: 9 item(s)
+       221662  Dopamine
+       221289  Epinephrine
+       229617  Epinephrine.
+       221906  Norepinephrine
+       221749  Phenylephrine
+       229632  Phenylephrine (200/250)
+       229631  Phenylephrine (200/250)_OLD_1
+       229630  Phenylephrine (50/250)
+       222315  Vasopressin
+  renal_replacement via procedureevents: 7 item(s)
+       225436  CRRT Filter Change
+       225802  Dialysis - CRRT
+       225803  Dialysis - CVVHD
+       225809  Dialysis - CVVHDF
+       225955  Dialysis - SCUF
+       225441  Hemodialysis
+       225805  Peritoneal Dialysis
+  rbc_transfusion via inputevents: 1 item(s)
+       225168  Packed Red Blood Cells
+--- end itemid resolution ---
+
+scanning ICU event tables (reference standard)
+    inputevents      <- /Users/yngve/physionet.org/files/mimiciv/3.1/icu/inputevents.csv.gz
+    procedureevents  <- /Users/yngve/physionet.org/files/mimiciv/3.1/icu/procedureevents.csv.gz
+    vasopressor          present in 2659 admissions
+    renal_replacement    present in 734 admissions
+    rbc_transfusion      present in 1671 admissions
+
+reading discharge summaries
+    discharge       <- /Users/yngve/physionet.org/files/mimic-iv-note/2.2/note/discharge.csv.gz
+    4078 summaries (one per admission)
+    notes per quartile (q_num): {0: 1308, 1: 1080, 2: 915, 3: 775}
+
+Ollama 0.35.0  model qwen3:30b  digest ad815644918f  Q4_K_M
+
+LLM: 0 cached, 4078 to run (model qwen3:30b, num_ctx 32768)
+    5/4078  5.0 s/note  ETA 5.7 h
+    20/4078  6.2 s/note  ETA 7.0 h
+    100/4078  6.1 s/note  ETA 6.7 h
+    200/4078  6.0 s/note  ETA 6.5 h
+    300/4078  5.9 s/note  ETA 6.2 h
+    400/4078  5.9 s/note  ETA 6.1 h
+    500/4078  5.9 s/note  ETA 5.8 h
+    600/4078  5.9 s/note  ETA 5.7 h
+    700/4078  6.0 s/note  ETA 5.6 h
+    800/4078  59.6 s/note  ETA 54.3 h
+    900/4078  78.3 s/note  ETA 69.1 h
+    1000/4078  71.1 s/note  ETA 60.8 h
+    1100/4078  65.2 s/note  ETA 54.0 h
+    1200/4078  60.3 s/note  ETA 48.2 h
+    1300/4078  56.2 s/note  ETA 43.3 h
+    1400/4078  52.7 s/note  ETA 39.2 h
+    1500/4078  49.6 s/note  ETA 35.5 h
+    1600/4078  46.9 s/note  ETA 32.3 h
+    1700/4078  44.5 s/note  ETA 29.4 h
+    1800/4078  42.4 s/note  ETA 26.8 h
+    1900/4078  40.5 s/note  ETA 24.5 h
+    2000/4078  38.8 s/note  ETA 22.4 h
+    2100/4078  37.2 s/note  ETA 20.5 h
+    2200/4078  35.8 s/note  ETA 18.7 h
+    2300/4078  34.5 s/note  ETA 17.1 h
+    2400/4078  33.4 s/note  ETA 15.6 h
+    2500/4078  32.3 s/note  ETA 14.2 h
+    2600/4078  31.3 s/note  ETA 12.9 h
+    2700/4078  30.4 s/note  ETA 11.6 h
+    2800/4078  29.5 s/note  ETA 10.5 h
+    2900/4078  28.7 s/note  ETA 9.4 h
+    3000/4078  28.0 s/note  ETA 8.4 h
+    3100/4078  27.3 s/note  ETA 7.4 h
+    3200/4078  26.6 s/note  ETA 6.5 h
+    3300/4078  26.0 s/note  ETA 5.6 h
+    3400/4078  25.4 s/note  ETA 4.8 h
+    3500/4078  24.9 s/note  ETA 4.0 h
+    3600/4078  24.3 s/note  ETA 3.2 h
+    3700/4078  23.9 s/note  ETA 2.5 h
+    3800/4078  23.4 s/note  ETA 1.8 h
+    3900/4078  22.9 s/note  ETA 1.1 h
+    4000/4078  22.5 s/note  ETA 0.5 h
+    4078/4078  22.2 s/note  ETA 0.0 h
+
+4078 of 4078 notes have LLM answers
+
+computing lab-only SOFA, first 24 ICU hours
+    d_labitems       <- /Users/yngve/physionet.org/files/mimiciv/3.1/hosp/d_labitems.csv.gz
+    platelets   itemids [51265, 53189]  labels ['Platelet Count']
+    bilirubin   itemids [50885, 53089]  labels ['Bilirubin, Total']
+    creatinine  itemids [50912, 52546]  labels ['Creatinine']
+    labevents        <- /Users/yngve/physionet.org/files/mimiciv/3.1/hosp/labevents.csv.gz
+    platelets   units found ['k/ul']
+    bilirubin   units found ['mg/dl']
+    creatinine  units found ['mg/dl']
+    lab-only SOFA for 4078 stays; components observed (mean) 2.63 of 3
+
+=== P8 analysis ===
+RESULT
+
+Exclusions (note x fact) by quartile:
+ q_num  note_fact  excluded  parse_fail
+     0       3924         0           0
+     1       3240         0           0
+     2       2745         0           0
+     3       2325         0           0
+
+Primary set, pooled miss rate by quartile (Wilson 95% CI):
+ q_num   n  events   rate   lo95   hi95
+     0 930     141 0.1516 0.1300 0.1761
+     1 858     141 0.1643 0.1410 0.1906
+     2 798     165 0.2068 0.1801 0.2362
+     3 737     170 0.2307 0.2017 0.2624
+
+PRIMARY                                       OR 1.136 (1.041-1.240) p=0.004284 n=3323 events=617
+S1                                            OR 1.165 (1.097-1.238) p=6.964e-07 n=4311 events=1561
+S2                                            OR 1.187 (0.815-1.730) p=0.3722 n=7157 events=23
+S3 primary + log(words)                       OR 1.136 (1.041-1.240) p=0.004249 n=3323 events=617
+S4 lab-only SOFA (per point), vaso + rbc      OR 0.961 (0.922-1.003) p=0.06715 n=2732 events=594
+S5 vasopressor                                OR 1.156 (1.053-1.268) p=0.00219 n=1699 events=565
+S5 renal_replacement                          OR 0.782 (0.506-1.208) p=0.2684 n=591 events=23
+S5 rbc_transfusion                            OR 1.219 (0.884-1.682) p=0.2271 n=1033 events=29
+S6 exclusions counted as misses               OR 1.136 (1.041-1.240) p=0.004284 n=3323 events=617
+
+PRIMARY DECISION: SUPPORTED
+
+written to /Users/yngve/extension_results/p8
+
+CAVEATS
+  * itemids resolved by d_items label regex -- inspect itemids.txt
+  * 'documented' is a surface regex with a 40-char negation window
+  * reference covers the ICU stay; the question covers the admission
+  * truncation flag is heuristic (prompt tokens, words x 1.6)
+(base) yngve@MacBook-Pro-M2 Downloads % 

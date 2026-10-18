@@ -1,0 +1,67 @@
+(base) yngve@MacBook-Pro-M2 Downloads % uv run --offline extension_p8_error_demand.py --pilot 40 2>&1 | tee ~/extension_results/p8_pilot.log
+Installed 20 packages in 137ms
+
+building cohort
+    acuity          <- /Users/yngve/projects/BCST/paper18_results/paper18_phase1_acuity.csv
+    acuity columns: ['stay_id', 'n_acuity_hours', 'acuity_hr_locf', 'acuity_map_locf', 'acuity_rr_locf', 'acuity_spo2_locf', 'acuity_gcs_locf', 'score_hr', 'score_map', 'score_rr', 'score_spo2', 'score_gcs', 'anchor_age', 'vent_first_24h', 'score_age', 'score_vent', 'acuity_proxy_24h', 'acuity_quartile']
+
+--- circularity check against acuity columns ---
+    ok vasopressor: no overlapping acuity column
+    ok renal_replacement: no overlapping acuity column
+    ok rbc_transfusion: no overlapping acuity column
+--- end circularity check ---
+    icustays         <- /Users/yngve/physionet.org/files/mimiciv/3.1/icu/icustays.csv.gz
+    icustays: 94458 stays -> 77547 in single-stay admissions
+    joined to acuity: 5127 admissions, 4686 patients; quartile coding {'1': 0, '2': 1, '3': 2, '4': 3}
+
+--- itemid resolution (VERIFY THESE) ---
+    d_items          <- /Users/yngve/physionet.org/files/mimiciv/3.1/icu/d_items.csv.gz
+  vasopressor via inputevents: 9 item(s)
+       221662  Dopamine
+       221289  Epinephrine
+       229617  Epinephrine.
+       221906  Norepinephrine
+       221749  Phenylephrine
+       229632  Phenylephrine (200/250)
+       229631  Phenylephrine (200/250)_OLD_1
+       229630  Phenylephrine (50/250)
+       222315  Vasopressin
+  renal_replacement via procedureevents: 8 item(s)
+       225436  CRRT Filter Change
+       225802  Dialysis - CRRT
+       225803  Dialysis - CVVHD
+       225809  Dialysis - CVVHDF
+       225955  Dialysis - SCUF
+       224270  Dialysis Catheter
+       225441  Hemodialysis
+       225805  Peritoneal Dialysis
+  rbc_transfusion via inputevents: 1 item(s)
+       225168  Packed Red Blood Cells
+--- end itemid resolution ---
+
+scanning ICU event tables (reference standard)
+    inputevents      <- /Users/yngve/physionet.org/files/mimiciv/3.1/icu/inputevents.csv.gz
+    procedureevents  <- /Users/yngve/physionet.org/files/mimiciv/3.1/icu/procedureevents.csv.gz
+    vasopressor          present in 2659 admissions
+    renal_replacement    present in 851 admissions
+    rbc_transfusion      present in 1671 admissions
+
+reading discharge summaries
+    discharge       <- /Users/yngve/physionet.org/files/mimic-iv-note/2.2/note/discharge.csv.gz
+    4078 summaries (one per admission)
+    notes per quartile (q_num): {0: 1308, 1: 1080, 2: 915, 3: 775}
+
+Ollama 0.35.0  model qwen3:30b  digest ad815644918f  Q4_K_M
+
+LLM: 0 cached, 40 to run (model qwen3:30b, num_ctx 32768)
+    5/40  11.1 s/note  ETA 0.1 h
+    20/40  8.1 s/note  ETA 0.0 h
+    40/40  7.5 s/note  ETA 0.0 h
+
+PILOT
+    notes run          40
+    seconds/note       median 6.3  max 34.4
+    parse failures     0
+    possibly truncated 0
+    max prompt tokens  11303
+    ETA full run       7.1 h for 4038 remaining notes

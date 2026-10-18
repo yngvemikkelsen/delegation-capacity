@@ -1,0 +1,92 @@
+(base) yngve@MacBook-Pro-M2 Downloads % cd ~/Downloads
+uv run --offline extension_p8_vaso_diagnostic_v2.py --labels ~/Downloads/review_labels.csv
+POST HOC ADJUDICATION v2 -- vasopressor documentation judged blind
+
+(a) Labels by quartile and LLM answer (counts)
+
+label           A   N  O   U  All
+answer q_num                     
+hit    1       10   0  0   0   10
+       2       10   0  0   0   10
+       3       10   0  0   0   10
+       4        9   1  0   0   10
+miss   1       39   5  1   5   50
+       2       42   3  0   5   50
+       3       42   2  1   5   50
+       4       42   2  2   4   50
+All           204  13  4  19  240
+
+(b) Share labelled A (documentation of administration this admission)
+
+answer quartile  n_rated   A  O  N  share_A  lo95  hi95
+  miss        1       45  39  1  5    0.867 0.738 0.937
+  miss        2       45  42  0  3    0.933 0.821 0.977
+  miss        3       45  42  1  2    0.933 0.821 0.977
+  miss        4       46  42  2  2    0.913 0.797 0.966
+  miss      all      181 165  4 12    0.912 0.861 0.945
+   hit        1       10  10  0  0    1.000 0.722 1.000
+   hit        2       10  10  0  0    1.000 0.722 1.000
+   hit        3       10  10  0  0    1.000 0.722 1.000
+   hit        4       10   9  0  1    0.900 0.596 0.982
+   hit      all       40  39  0  1    0.975 0.871 0.996
+
+trend in NOT-A among reviewed misses (OR/quartile)   OR 0.842 (0.509-1.392) p=0.5024 n=181 events=16
+  (an OR above 1 means flag failures concentrate in deranged quartiles)
+
+(c) Rule-based context classes vs reader (U excluded; A vs O/N)
+
+strict  loose-only  strict
+label                     
+A                5     199
+N                4       9
+O                1       3
+
+agreement 0.923  kappa 0.332  strict among A 0.975  loose-only among O/N 0.294
+
+(d) Gradient with documentation judged by the reader
+
+--- U excluded (main) ---
+ q_num  misses  hits  rev_misses  t_A_misses  rev_hits  h_A_hits  share_A_all  corr_events  corr_denom  corr_rate
+     0     122   293          45       0.867        10     1.000        0.961      105.733     398.733      0.265
+     1     133   302          45       0.933        10     1.000        0.980      124.133     426.133      0.291
+     2     151   288          45       0.933        10     1.000        0.977      140.933     428.933      0.329
+     3     159   251          46       0.913        10     0.900        0.905      145.174     371.074      0.391
+raw miss rate by quartile (regex-documented): [0.294, 0.306, 0.344, 0.388]
+adjudicated miss-rate trend: OR per quartile 1.211 (bootstrap 95% CI 1.063-1.395, 2000 resamples)
+
+--- U counted as A ---
+ q_num  misses  hits  rev_misses  t_A_misses  rev_hits  h_A_hits  share_A_all  corr_events  corr_denom  corr_rate
+     0     122   293          50       0.880        10     1.000        0.965      107.360     400.360      0.268
+     1     133   302          50       0.940        10     1.000        0.982      125.020     427.020      0.293
+     2     151   288          50       0.940        10     1.000        0.979      141.940     429.940      0.330
+     3     159   251          50       0.920        10     0.900        0.908      146.280     372.180      0.393
+raw miss rate by quartile (regex-documented): [0.294, 0.306, 0.344, 0.388]
+adjudicated miss-rate trend: OR per quartile 1.208 (bootstrap 95% CI 1.065-1.395, 2000 resamples)
+
+--- U counted as not A ---
+ q_num  misses  hits  rev_misses  t_A_misses  rev_hits  h_A_hits  share_A_all  corr_events  corr_denom  corr_rate
+     0     122   293          50       0.780        10     1.000        0.935       95.160     388.160      0.245
+     1     133   302          50       0.840        10     1.000        0.951      111.720     413.720      0.270
+     2     151   288          50       0.840        10     1.000        0.945      126.840     414.840      0.306
+     3     159   251          50       0.840        10     0.900        0.877      133.560     359.460      0.372
+raw miss rate by quartile (regex-documented): [0.294, 0.306, 0.344, 0.388]
+adjudicated miss-rate trend: OR per quartile 1.220 (bootstrap 95% CI 1.063-1.408, 2000 resamples)
+
+(e) Reviewed misses: share A by term category (U excluded)
+
+                 n   A  share_A
+category                       
+generic         18  18    1.000
+brand_only      47  47    1.000
+umbrella_only  106  95    0.896
+loose_only      10   5    0.500
+
+Reading: share_A among misses is the share of the delegate's misses whose
+excerpts document administration during this admission on blinded reading.
+Label A includes notes that document vasopressors only as pressors or
+vasopressors, where a literal reading of the question might justify 'no';
+(e) separates them. A share that falls with quartile would mean the raw
+gradient was inflated by the documentation flag; the adjudicated trend in (d)
+is the corrected estimate. The review measures the flag's precision, not
+what the flag misses.
+(base) yngve@MacBook-Pro-M2 Downloads % 
