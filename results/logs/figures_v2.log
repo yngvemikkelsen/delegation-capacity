@@ -1,0 +1,10 @@
+writing figures
+    /Users/yngve/extension_results/figures_v2/Figure1_P8_error_by_quartile_v2.tif / .png  2125x968 px = 180 x 82 mm
+    /Users/yngve/extension_results/figures_v2/Figure2_P4_retraining_v2.tif / .png  2125x1015 px = 180 x 86 mm
+Figure 1 A Pooled       OR 1.136 (1.041-1.240) n=3323 events=617  fitted % [16.2, 17.7, 19.4, 21.1]  P8 run OR 1.136
+Figure 1 A Vasopressor  OR 1.156 (1.053-1.268) n=1699 events=565  fitted % [28.5, 31.6, 34.8, 38.1]  P8 run OR 1.156
+Figure 1 A RRT          OR 0.782 (0.506-1.208) n=591 events=23  fitted % [5.3, 4.2, 3.3, 2.6]  P8 run OR 0.782
+Figure 1 A Transfusion  OR 1.219 (0.884-1.682) n=1033 events=29  fitted % [2.2, 2.6, 3.2, 3.8]  P8 run OR 1.219
+Figure 1 B Pooled       OR 1.165 (1.097-1.238) n=4311 events=1561  fitted % [31.7, 34.7, 37.9, 41.2]  P8 run OR 1.165
+Figure 1 C Pooled       OR 1.187 (0.815-1.730) n=7157 events=23  fitted % [0.3, 0.3, 0.4, 0.4]  P8 run OR 1.187
+    /Users/yngve/extension_results/figures_v2/figure_values_v2.csv

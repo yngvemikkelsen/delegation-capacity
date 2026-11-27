@@ -8,9 +8,9 @@ authors:
     orcid: "https://orcid.org/0000-0003-1543-3805"
     affiliation: "Independent Researcher, Jar, Norway"
 repository-code: "https://github.com/yngvemikkelsen/delegation-capacity"
-version: "1.0.0"
+version: "1.1.0"
 license: MIT
-date-released: "2026-10-18"
+date-released: "2026-11-27"
 keywords:
   - clinical artificial intelligence
   - delegation
